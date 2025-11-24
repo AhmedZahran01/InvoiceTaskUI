@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+
+        <input type="email" id="loginEmail" placeholder="Enter your email">
+        <input type="password" id="loginPass" placeholder="Enter your password">
+        <button id="loginBtn">Login</button>
+    </div>
+
+    <script>
+        // عند الضغط على زر Login
+        document.getElementById('loginBtn').addEventListener('click', loginD);
+
+        async function loginD() {
+            // جلب البيانات من inputs
+            const username = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPass').value;
+
+            // تحقق إذا الإدخالات فارغة
+            if (!username || !password) {
+                alert('Please enter both email and password.');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ Username: username, Password: password })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    // حفظ التوكن في localStorage
+                    localStorage.setItem('jwt', data.token);
+                    alert('Logged in successfully!');
+                    // إعادة التوجيه لصفحة إنشاء الفاتورة
+                    window.location.href = '/Invoice/Create';
+                } else if (res.status === 401) {
+                    alert('Login failed. Invalid credentials.');
+                } else {
+                    alert('Something went wrong. Please try again.');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Network error. Check your connection.');
+            }
+        }
+    </script>
+</body>
+</html>
