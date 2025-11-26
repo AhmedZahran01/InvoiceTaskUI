@@ -12,18 +12,18 @@ namespace InvoiceTaskUI
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddAuthentication("Bearer")
- .AddJwtBearer("Bearer", options =>
- {
-     options.RequireHttpsMetadata = false;
-     options.SaveToken = false;
-     options.TokenValidationParameters = new TokenValidationParameters
-     {
-         ValidateIssuer = false,
-         ValidateAudience = false,
-         ValidateLifetime = false,
-         ValidateIssuerSigningKey = false
-     };
- });
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = false,
+                        ValidateIssuerSigningKey = false
+                    };
+                });
 
             var app = builder.Build();
 
